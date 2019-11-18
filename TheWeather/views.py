@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 from .models import City
 from .forms import CityForm
@@ -9,7 +9,7 @@ def home(request):
 
     err_msg = ''
     message = ''
-    message_classs = ''
+    message_class = ''
 
     if request.method == "POST":
         form = CityForm(request.POST)
@@ -57,3 +57,8 @@ def home(request):
     }
 
     return render(request, 'TheWeather/weather.html', context)
+
+
+def delete_city(request, city_name):
+    City.objects.get(name=city_name).delete()
+    return redirect('home')
